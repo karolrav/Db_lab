@@ -7,13 +7,19 @@
 package avariju.GUI;
 
 import avariju.db.JdbcSQLServerConnection;
+import com.sun.jdi.connect.spi.Connection;
 import static java.awt.image.ImageObserver.WIDTH;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import net.proteanit.sql.DbUtils;
 /**
  *
  * @author tueik
@@ -40,6 +46,8 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        ieskoti = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -74,7 +82,25 @@ public class pagrindinis_langas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+
+        ieskoti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ieskotiActionPerformed(evt);
+            }
+        });
+        ieskoti.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ieskotiKeyReleased(evt);
+            }
+        });
+
+        jLabel1.setText("Paieška:");
 
         jMenu2.setText("Prideti duomenu");
 
@@ -143,16 +169,27 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addComponent(jLabel1)
+                        .addGap(31, 31, 31)
+                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(57, 57, 57))
         );
 
         pack();
@@ -173,7 +210,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
          naujas = new prideti(this,true);
         naujas.setVisible(true);
-     
+      naujas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       try {
           lentele();
       } catch (SQLException ex) {
@@ -182,9 +219,56 @@ public class pagrindinis_langas extends javax.swing.JFrame {
   
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void ieskotiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ieskotiActionPerformed
+      
+    }//GEN-LAST:event_ieskotiActionPerformed
+
+    private void ieskotiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ieskotiKeyReleased
+       
+       try{
+        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR FROM dbo.EISMO_DALYVIS \n" +
+                "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+"INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+                      "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +    
+                "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + ieskoti.getText() + "%' OR DALYVAUJA.EISMO_IVYKIO_ID LIKE  '%" + ieskoti.getText() + "%'  OR EISMO_DALYVIS.ASMENS_KODAS LIKE  '%" + ieskoti.getText() + "%' OR TRANSPORTO_PRIEMONE.MARKE LIKE  '%" + ieskoti.getText() + "%' OR EISMO_IVYKIS.MIESTO_NR LIKE  '%" + ieskoti.getText() + "%' ";
+      ResultSet rs = con.getback(query);
+      jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
+}
+     catch (Exception e) { 
+        JOptionPane.showMessageDialog(null,"Got an exception!");
+        System.err.println(e.getMessage()); 
+    }        
+    }//GEN-LAST:event_ieskotiKeyReleased
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+      
+        try {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            int col = jTable1.columnAtPoint(evt.getPoint());
+            String value = jTable1.getModel().getValueAt(row, col).toString();
+            
+            String query = " SELECT IVYKIO_VIETA.miestas FROM dbo.IVYKIO_VIETA \n" +
+                    "WHERE IVYKIO_VIETA.MIESTO_NR LIKE '%" + value + "%'  \n" +
+                    "";
+            
+            ResultSet rs = con.getback(query);
+            while (rs.next()) {
+                String mies = rs.getString("MIESTAS");
+             //   String str = rs.getString("ASMENS_KODAS");
+                JOptionPane.showMessageDialog(null,mies);
+            }   } catch (SQLException ex) {
+            Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
       public void lentele() throws SQLException{
       
-       String sql = "SELECT * FROM dbo.DALYVAUJA";
+       String sql = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR FROM dbo.EISMO_DALYVIS \n" +
+                "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+"INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+               "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +          
+"";
+       
         ResultSet rsl = con.getback(sql);
         boolean b = rsl.last();
     int count = rsl.getRow();
@@ -199,6 +283,9 @@ public class pagrindinis_langas extends javax.swing.JFrame {
        while(rsl.next()) {
         mas[i][0] = rsl.getString("VALSTYBINIAI_NUMERIAI");   
            mas[i][1] = rsl.getString("EISMO_IVYKIO_ID"); 
+             mas[i][2] = rsl.getString("ASMENS_KODAS"); 
+               mas[i][3] = rsl.getString("MARKE"); 
+                mas[i][4] = rsl.getString("MIESTO_NR"); 
 i++;
         
     }
@@ -206,7 +293,7 @@ i++;
           jTable1.setModel(new javax.swing.table.DefaultTableModel(
            mas,
             new String [] {
-                "VALSTYBINIAI NUMERIAI", "EISMO_IVYKIO_ID", "Expene", "Income", "Sum"
+                "Valstybiniai numeriai", "EISMO_IVYKIO_ID", "Asmens kodas", "Marke","Miesto_Nr"
             }
         ) {
             Class[] types = new Class [] {
@@ -221,8 +308,8 @@ i++;
       
           
     }
-
       
+
 
       
     
@@ -263,6 +350,8 @@ i++;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ieskoti;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;

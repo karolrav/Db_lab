@@ -61,5 +61,17 @@ public class JdbcSQLServerConnection {
       return -1;
     }
   }
+   
+    public ResultSet filtr(String query){
+    try{
+     PreparedStatement pstmt = conn.prepareStatement(query);
+       ResultSet result = pstmt.executeQuery();
+      return result;
+    }catch(SQLException e){
+      System.out.println("ERROR while executing filter query");
+      System.out.println(e.toString());
+      return null;
+    }
+  }
 
 }
