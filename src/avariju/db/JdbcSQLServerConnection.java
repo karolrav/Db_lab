@@ -21,9 +21,9 @@ public class JdbcSQLServerConnection {
   public void connect(){
         try {
  
-            String DB_URL = "jdbc:sqlserver://DESKTOP-FL6PS0D\\SQLEXPRESS:1433;databaseName=veikianti";
+            String DB_URL = "jdbc:sqlserver://DESKTOP-FL6PS0D\\data:1433;databaseName=veikianti;";
  String DB_USER = "root";
-   String DB_PASSWORD = "pass";
+ String DB_PASSWORD = "admin";
    
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             System.out.println("Connected to data base ");

@@ -48,6 +48,8 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         ieskoti = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        filter = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -101,6 +103,20 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         });
 
         jLabel1.setText("Paieška:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        filter.setText("Išvalyti");
+        filter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterActionPerformed(evt);
+            }
+        });
 
         jMenu2.setText("Prideti duomenu");
 
@@ -179,11 +195,21 @@ public class pagrindinis_langas extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filter)
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(filter))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -226,11 +252,12 @@ public class pagrindinis_langas extends javax.swing.JFrame {
     private void ieskotiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ieskotiKeyReleased
        
        try{
-        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR FROM dbo.EISMO_DALYVIS \n" +
+        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
-                      "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +    
-                "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + ieskoti.getText() + "%' OR DALYVAUJA.EISMO_IVYKIO_ID LIKE  '%" + ieskoti.getText() + "%'  OR EISMO_DALYVIS.ASMENS_KODAS LIKE  '%" + ieskoti.getText() + "%' OR TRANSPORTO_PRIEMONE.MARKE LIKE  '%" + ieskoti.getText() + "%' OR EISMO_IVYKIS.MIESTO_NR LIKE  '%" + ieskoti.getText() + "%' ";
+                      "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
+                   "INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR\n" +    
+                "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + ieskoti.getText() + "%' OR DALYVAUJA.EISMO_IVYKIO_ID LIKE  '%" + ieskoti.getText() + "%'  OR EISMO_DALYVIS.ASMENS_KODAS LIKE  '%" + ieskoti.getText() + "%' OR TRANSPORTO_PRIEMONE.MARKE LIKE  '%" + ieskoti.getText() + "%' OR IVYKIO_VIETA.MIESTAS LIKE  '%" + ieskoti.getText() + "%' ";
       ResultSet rs = con.getback(query);
       jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
 }
@@ -246,46 +273,159 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             int row = jTable1.rowAtPoint(evt.getPoint());
             int col = jTable1.columnAtPoint(evt.getPoint());
             String value = jTable1.getModel().getValueAt(row, col).toString();
-            
-            String query = " SELECT IVYKIO_VIETA.miestas FROM dbo.IVYKIO_VIETA \n" +
-                    "WHERE IVYKIO_VIETA.MIESTO_NR LIKE '%" + value + "%'  \n" +
+            if(col==4){
+            String query = " SELECT IVYKIO_VIETA.GATVE, IVYKIO_VIETA.MIESTO_NR, IVYKIO_VIETA.KORDINATES FROM dbo.IVYKIO_VIETA, dbo.EISMO_IVYKIS \n" +
+                    "WHERE IVYKIO_VIETA.MIESTAS LIKE '%" + value + "%'  \n" +
+                      "AND IVYKIO_VIETA.MIESTO_NR=EISMO_IVYKIS.MIESTO_NR  \n" +
                     "";
             
+            
             ResultSet rs = con.getback(query);
+            String gatv = null, kord=null, nr = null;
             while (rs.next()) {
-                String mies = rs.getString("MIESTAS");
-             //   String str = rs.getString("ASMENS_KODAS");
-                JOptionPane.showMessageDialog(null,mies);
-            }   } catch (SQLException ex) {
+                 gatv = rs.getString("GATVE");
+                 kord = rs.getString("KORDINATES");
+                 nr = rs.getString("MIESTO_NR");
+               
+            } 
+            String to_print = "Gatvė :"+ gatv +"\n"+ "Kordinates: " + kord  +"\n"+ "Miesto NR: " + nr;
+            
+            JOptionPane.showMessageDialog(null,to_print); } else if(col==3) {
+            
+             String query = " SELECT * FROM dbo.TRANSPORTO_PRIEMONE \n" +
+                    "WHERE TRANSPORTO_PRIEMONE.MARKE LIKE '%" + value + "%'  \n" +
+                    "";
+            
+            
+            ResultSet rs = con.getback(query);
+            String mode = null, vin=null, techas = null, draud=null;
+            while (rs.next()) {
+                 mode = rs.getString("MODELIS");
+                 vin = rs.getString("VIN_KODAS");
+                 techas = rs.getString("TECHNINES_AZPIUROS_GALIOJIMO_DATA");
+                 draud = rs.getString("DRAUDIMO_NR");
+               
+            } 
+            String to_print = "Modelis :"+ mode +"\n"+ "VIN kodas: " + vin +"\n"+ "Technines azpiuros galiojimo data: " + techas +"\n"+ "Draudimo NR:" + draud;
+            
+            JOptionPane.showMessageDialog(null,to_print); } else if(col==2) {
+                
+                String query = " SELECT * FROM dbo.EISMO_DALYVIS \n" +
+                    "WHERE EISMO_DALYVIS.ASMENS_KODAS LIKE '%" + (value) + "%'  \n" +
+                    "";
+            
+            
+            ResultSet rs = con.getback(query);
+            String lytis = null, data=null, dal_id = null, ivyk_id=null, nr=null, zala=null, kal_id=null;
+            while (rs.next()) {
+                 lytis = rs.getString("LYTIS");
+                 data = rs.getString("GIMIMO_DATA");
+                 dal_id = rs.getString("EISMO_DALYVIO_ID");
+                 ivyk_id = rs.getString("EISMO_IVYKIO_ID");
+                  nr = rs.getString("VALSTYBINIAI_NUMERIAI");
+                   zala = rs.getString("PRELIMINARI_ZALA");
+                    kal_id = rs.getString("KALTININKO_ID");
+            
+               
+            } 
+            String to_print = "lytis :"+ lytis +"\n"+ "data: " + data +"\n"+ "ivykio ID: " + ivyk_id +"\n"+ "dalyvio ID:" + dal_id  +"\n"+ "Automobilio valstybinis  numeris:" + nr +"\n"+ "Preliminari zala:" + zala +"\n"+ "Kaltininko ID:" + kal_id;
+            
+            JOptionPane.showMessageDialog(null,to_print);
+            } else if(col==0) {
+            
+                  String query = " SELECT * FROM dbo.DALYVAUJA, dbo.EISMO_IVYKIS \n" +
+                    "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + value + "%'  \n" +
+                            "AND DALYVAUJA.EISMO_IVYKIO_ID=EISMO_IVYKIS.EISMO_IVYKIO_ID  \n" +
+                    "";
+            
+            
+            ResultSet rs = con.getback(query);
+            String zuv = null, suz=null, trans = null, liud=null, id=null, miesto_nr=null, data=null, miestas=null;
+            while (rs.next()) {
+                 zuv = rs.getString("ZUVUSIUJU_SKAICIUS");
+                 suz = rs.getString("SUZEISTUJU_SKAICIUS");
+                 trans = rs.getString("TRANSPORTO_PRIEMONIU_SKAICIUS");
+                 liud = rs.getString("LIUDININKU_SKAICIUS");
+                 data = rs.getString("IVYKIO_DATA");
+             
+            
+               
+            } 
+            String to_print = "Zuvusiuju skaicius :"+ zuv +"\n"+ "Suzeistuju skaicius : " + suz +"\n"+ "Transporto priemoniu skaicius : " + trans +"\n"+ "Liudininu skaicius :" + liud  +"\n"+ "Ivykio data:" + data;
+            
+            JOptionPane.showMessageDialog(null,to_print);
+            }
+            
+            
+           
+        } 
+        catch (SQLException ex) {
             Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-      public void lentele() throws SQLException{
-      
-       String sql = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR FROM dbo.EISMO_DALYVIS \n" +
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+       try{
+        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
-               "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +          
+                      "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
+                   "INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR\n" +    
+              "WHERE IVYKIO_VIETA.MIESTAS LIKE '%" + jComboBox1.getSelectedItem().toString() + "%' ";
+      ResultSet rs = con.getback(query);
+      jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
+}
+     catch (Exception e) { 
+        JOptionPane.showMessageDialog(null,"Got an exception!");
+        System.err.println(e.getMessage()); 
+    }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
+        try {
+            lentele();
+        } catch (SQLException ex) {
+            Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_filterActionPerformed
+
+      public void lentele() throws SQLException{
+      
+       String sql = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
+                "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+"INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
+               "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +     
+                "INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR\n" +    
 "";
        
         ResultSet rsl = con.getback(sql);
         boolean b = rsl.last();
     int count = rsl.getRow();
     rsl.beforeFirst();
+    
+    String sql1 = "SELECT DISTINCT IVYKIO_VIETA.MIESTAS FROM dbo.IVYKIO_VIETA";
+     ResultSet rsl1 = con.getback(sql1);
+      String mode = null;
+            while (rsl1.next()) {
+                 mode = rsl1.getString("MIESTAS");
+                    //jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {mode}));
+                    jComboBox1.addItem(mode);
+                       //  JOptionPane.showMessageDialog(null,mode);
+            }
+        
 
 
         
     String [][] mas = new String [count][5];
     int i = 0;
 
-    
+
        while(rsl.next()) {
         mas[i][0] = rsl.getString("VALSTYBINIAI_NUMERIAI");   
-           mas[i][1] = rsl.getString("EISMO_IVYKIO_ID"); 
+           mas[i][1] = rsl.getString("PRELIMINARI_ZALA"); 
              mas[i][2] = rsl.getString("ASMENS_KODAS"); 
                mas[i][3] = rsl.getString("MARKE"); 
-                mas[i][4] = rsl.getString("MIESTO_NR"); 
+                mas[i][4] = rsl.getString("MIESTAS"); 
 i++;
         
     }
@@ -293,7 +433,7 @@ i++;
           jTable1.setModel(new javax.swing.table.DefaultTableModel(
            mas,
             new String [] {
-                "Valstybiniai numeriai", "EISMO_IVYKIO_ID", "Asmens kodas", "Marke","Miesto_Nr"
+                "Valstybiniai numeriai", "PRELIMINARI ZALA EUR", "Asmens kodas", "Marke","Miestas"
             }
         ) {
             Class[] types = new Class [] {
@@ -350,7 +490,9 @@ i++;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton filter;
     private javax.swing.JTextField ieskoti;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
