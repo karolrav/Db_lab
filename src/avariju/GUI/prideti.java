@@ -6,9 +6,14 @@
 package avariju.GUI;
 
 import static avariju.GUI.pagrindinis_langas.con;
+import avariju.db.JdbcSQLServerConnection;
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,13 +23,12 @@ import javax.swing.JOptionPane;
  * @author tueik
  */
 public class prideti extends javax.swing.JFrame {
-
-    /**
-     * Creates new form add
-     */
+    
          public prideti(java.awt.Frame parent, boolean modal) {
       
-        initComponents();
+       
+                 initComponents();
+               
     }
 
 
@@ -45,6 +49,43 @@ public class prideti extends javax.swing.JFrame {
         Gatve = new javax.swing.JTextField();
         kordinates = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        zuv = new javax.swing.JTextField();
+        suz = new javax.swing.JTextField();
+        liud = new javax.swing.JTextField();
+        data = new javax.swing.JTextField();
+        tps = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        val_nr = new javax.swing.JTextField();
+        marke = new javax.swing.JTextField();
+        modelis = new javax.swing.JTextField();
+        techas = new javax.swing.JTextField();
+        draudimas = new javax.swing.JTextField();
+        vin = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        gimimo_data = new javax.swing.JTextField();
+        asmens_kodas = new javax.swing.JTextField();
+        zala = new javax.swing.JTextField();
+        kaltininko_id = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel21 = new javax.swing.JLabel();
+        salygos = new javax.swing.JTextField();
 
         jButton1.setText("jButton1");
 
@@ -56,16 +97,19 @@ public class prideti extends javax.swing.JFrame {
 
         jLabel4.setText("Kordinates");
 
-        Miestas.setText("jTextField1");
+        Miestas.setText("Vilnius");
         Miestas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MiestasActionPerformed(evt);
             }
         });
+        Miestas.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                MiestasPropertyChange(evt);
+            }
+        });
 
-        Gatve.setText("jTextField2");
-
-        kordinates.setText("jTextField4");
+        Gatve.setText("Savanorių g.4");
 
         jButton2.setText("Prideti");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -74,73 +118,440 @@ public class prideti extends javax.swing.JFrame {
             }
         });
 
+        zuv.setText("0");
+        zuv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zuvActionPerformed(evt);
+            }
+        });
+
+        suz.setText("0");
+
+        liud.setText("0");
+
+        data.setText("2021-05-03");
+
+        tps.setText("0");
+        tps.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tpsActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Žuvusiųjų skaičius");
+
+        jLabel5.setText("Sužeistųjų skaičius");
+
+        jLabel6.setText("Liudininkų skaičius");
+
+        jLabel8.setText("Ivykio Data");
+
+        jLabel9.setText("Transporto priemonių skaičius");
+
+        jLabel11.setText("unique");
+
+        jLabel10.setText("Valstybiniai Numberiai");
+
+        jLabel12.setText("Marke");
+
+        jLabel13.setText("Modelis");
+
+        jLabel14.setText("Technines apziuros g. data");
+
+        jLabel15.setText("Draudimo NR");
+
+        jLabel16.setText("VIN KODAS");
+
+        val_nr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                val_nrActionPerformed(evt);
+            }
+        });
+
+        marke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                markeActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Lytis");
+
+        jLabel17.setText("Gimimo Data");
+
+        jLabel18.setText("Asmens Kodas");
+
+        jLabel19.setText("Preliminari zala");
+
+        jLabel20.setText("Kaltininko_ID");
+
+        gimimo_data.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gimimo_dataActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "M", "K" }));
+
+        jLabel21.setText("Salygos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(tps, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(40, 40, 40)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel21)
+                        .addGap(31, 31, 31)
+                        .addComponent(salygos, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator2)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Miestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Gatve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(kordinates, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel11))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(zuv, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(liud, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(suz, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(97, 97, 97)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Miestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Gatve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(kordinates, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(68, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(techas))
+                                    .addComponent(marke, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel16)
+                                            .addComponent(jLabel15))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(draudimas)
+                                            .addComponent(vin)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel10)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel12)
+                                                .addComponent(jLabel13)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(32, 32, 32)
+                                                .addComponent(modelis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(val_nr, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(125, 125, 125))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel17)
+                                                .addComponent(jLabel18))
+                                            .addGap(28, 28, 28)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(gimimo_data, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                                                .addComponent(asmens_kodas))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(zala)
+                                                .addComponent(kaltininko_id, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)))))
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(Miestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(Miestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(val_nr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(Gatve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(19, 19, 19)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel12)
+                                            .addComponent(marke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(kordinates, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel11)))
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(modelis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel13)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(zuv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel14)
+                                    .addComponent(techas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel15)
+                                    .addComponent(draudimas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(3, 3, 3))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(suz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(liud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16)
+                            .addComponent(vin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(27, 27, 27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(tps, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(gimimo_data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(asmens_kodas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(Gatve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(jLabel21)
+                    .addComponent(salygos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(kordinates, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(jButton2)
-                .addContainerGap(41, Short.MAX_VALUE))
+                    .addComponent(jLabel19)
+                    .addComponent(zala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jLabel20)
+                    .addComponent(kaltininko_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void MiestasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MiestasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_MiestasActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      String miest = this.Miestas.getText();
-        String gatv = this.Gatve.getText();   
-              String kord = this.kordinates.getText();  
-       
-  
-            con.add("INSERT INTO dbo.IVYKIO_VIETA (MIESTAS,GATVE,KORDINATES) VALUES (? , ? , ?)",miest,gatv,kord);
-            this.dispose();
-       
+             try {
+                 String miest = this.Miestas.getText();
+                 String gatv = this.Gatve.getText();
+                 String kord = this.kordinates.getText();
+                 
+                 String zuv1 = this.zuv.getText();
+                     int Izuv=Integer.parseInt(zuv1);  
+                 String suz1 = this.suz.getText();
+                  int Isuz=Integer.parseInt(suz1); 
+                 String tps1 = this.tps.getText();
+                  int Itps=Integer.parseInt(tps1); 
+                 String liud1 = this.liud.getText();
+                  int Iliud=Integer.parseInt(liud1); 
+                 String data1 = this.data.getText();
+                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                 Date myDate = formatter.parse(data1);
+                 java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+                 
+                 String val = this.val_nr.getText();
+                  String mark = this.marke.getText();
+                   String mod = this.modelis.getText();
+                    String Stech = this.techas.getText();
+                    Date Dtech = formatter.parse(Stech);
+                 java.sql.Date sqltech = new java.sql.Date(Dtech.getTime());
+                  String Sdraud_nr = this.draudimas.getText();
+                   int draud_nr=Integer.parseInt(Sdraud_nr); 
+                  String vinas = this.vin.getText();
+                  
+                  String lytis= jComboBox1.getSelectedItem().toString();
+                  //char lytis = lytis1.charAt(0); // cia
+                  String Sgimimo = this.gimimo_data.getText();
+                  Date Dgimimo = formatter.parse(Sgimimo);
+                 java.sql.Date sqlgimimo = new java.sql.Date(Dgimimo.getTime()); // cia
+                   String asmens = this.asmens_kodas.getText(); // cia 
+                     String Szala = this.zala.getText();
+                  double zala =Double.parseDouble(Szala);  /// cia
+                  
+                   String Skaltas = this.kaltininko_id.getText();
+                   int kaltas=Integer.parseInt(Skaltas);  // cia
+                   
+                     String kokiossalygos = this.salygos.getText();
+                   
+            
+                  
+                 
+                 
+                 if(tps.getText().equals("")){ JOptionPane.showMessageDialog(null,"Transporto priemoniu skaicius negali buti 0");}
+                 else if (kordinates.getText().equals("")) {JOptionPane.showMessageDialog(null,"Kordinates negali buti tuscios");}
+                   
+                
+                 else {
+                 int miesto_id = con.add("INSERT INTO dbo.IVYKIO_VIETA (MIESTAS,GATVE,KORDINATES) VALUES (? , ? , ?)",miest,gatv,kord);
+                  System.out.println("nauajs id yra " + miesto_id);
+                     int a = con.add1("INSERT INTO EISMO_IVYKIS(ZUVUSIUJU_SKAICIUS,SUZEISTUJU_SKAICIUS,LIUDININKU_SKAICIUS,MIESTO_NR,IVYKIO_DATA,TRANSPORTO_PRIEMONIU_SKAICIUS) VALUES (? , ? , ?, ?, ?, ?)",Izuv, Isuz, Iliud, miesto_id, sqlDate, Itps);
+                     System.out.println("nauajs id yra " + a);
+                 con.add2("INSERT INTO TRANSPORTO_PRIEMONE(VALSTYBINIAI_NUMERIAI,marke, modelis ,technines_azpiuros_galiojimo_data, draudimo_nr,vin_kodas ) VALUES (? , ? , ?, ?, ?, ?)",val,mark,mod,sqltech,draud_nr,vinas);
+                 con.add3("INSERT INTO Dalyvauja (VALSTYBINIAI_NUMERIAI ,EISMO_IVYKIo_ID) VALUES (? , ?)",val,a);
+                int eismo_dalyvis = con.add4("INSERT INTO EISMO_DALYVIS ( LYTIS, GIMIMO_DATA, EISMO_IVYKIO_Id, ASMENS_KODAS, PRELIMINARI_ZALA, KALTININKO_ID,VALSTYBINIAI_NUMERIAI ) VALUES (? , ? , ?, ?, ?, ?, ?)",lytis,sqlgimimo,a,asmens,zala,kaltas,val);
+                int Ivykio_priezastis = con.add5("INSERT INTO dbo.IVYKIO_PRIEZASTIS (IVYKIO_PRIEZASTIES_SALYGOS) VALUES (?)",kokiossalygos);
+                con.add6("INSERT INTO dbo.IVYKSTA (EISMO_IVYKIO_ID, IVYKIO_PRIEZASTIES_ID) VALUES (?, ?)",a,Ivykio_priezastis);
+                 this.dispose(); } 
+             } catch (ParseException ex) {
+                 JOptionPane.showMessageDialog(null,"Neteisingai Ivestos Reiksmes");
+                 Logger.getLogger(prideti.class.getName()).log(Level.SEVERE, null, ex);
+             }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tpsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tpsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tpsActionPerformed
+
+    private void zuvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zuvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_zuvActionPerformed
+
+    private void val_nrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_val_nrActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_val_nrActionPerformed
+
+    private void markeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_markeActionPerformed
+
+    private void MiestasPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_MiestasPropertyChange
+
+    }//GEN-LAST:event_MiestasPropertyChange
+
+    private void gimimo_dataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gimimo_dataActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gimimo_dataActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Gatve;
     private javax.swing.JTextField Miestas;
+    private javax.swing.JTextField asmens_kodas;
+    private javax.swing.JTextField data;
+    private javax.swing.JTextField draudimas;
+    private javax.swing.JTextField gimimo_data;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextField kaltininko_id;
     private javax.swing.JTextField kordinates;
+    private javax.swing.JTextField liud;
+    private javax.swing.JTextField marke;
+    private javax.swing.JTextField modelis;
+    private javax.swing.JTextField salygos;
+    private javax.swing.JTextField suz;
+    private javax.swing.JTextField techas;
+    private javax.swing.JTextField tps;
+    private javax.swing.JTextField val_nr;
+    private javax.swing.JTextField vin;
+    private javax.swing.JTextField zala;
+    private javax.swing.JTextField zuv;
     // End of variables declaration//GEN-END:variables
 }
