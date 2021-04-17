@@ -7,6 +7,7 @@ package avariju.db;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class JdbcSQLServerConnection {
 
@@ -47,6 +48,24 @@ public class JdbcSQLServerConnection {
       return null;
     }
   }
+   
+       public ResultSet getback1(String query,LocalDateTime a, LocalDateTime b) {
+        try{
+    //Statement statement = conn.createStatement(query);
+      PreparedStatement pstmt = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+     pstmt.setTimestamp(1, Timestamp.valueOf(a));
+      pstmt.setTimestamp(2, Timestamp.valueOf(b));
+        
+      return pstmt.executeQuery();
+    }catch(SQLException e){
+      System.out.println("ERROR while executing check query");
+      System.out.println(e.toString());
+      return null;
+    }
+    }
+
+   
+   
    
    public int add(String query,String miest, String gatv, String kord){
     try{
@@ -199,5 +218,6 @@ public class JdbcSQLServerConnection {
       return -1;
     }
     }
+
 
 }

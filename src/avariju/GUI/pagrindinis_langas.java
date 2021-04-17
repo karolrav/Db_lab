@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.sql.Date;  
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -126,6 +127,12 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         dateChooserCombo1.addCommitListener(new datechooser.events.CommitListener() {
             public void onCommit(datechooser.events.CommitEvent evt) {
                 dateChooserCombo1OnCommit(evt);
+            }
+        });
+
+        dateChooserCombo2.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+            public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+                dateChooserCombo2OnSelectionChange(evt);
             }
         });
 
@@ -352,23 +359,29 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
 
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
          String dateFormatted = formattedDate.format(dateChooserCombo1.getSelectedDate().getTime());
-     JOptionPane.showMessageDialog(null,dateFormatted);
-     Date date=Date.valueOf(dateFormatted);
-
+          String dateFormatted2 = formattedDate.format(dateChooserCombo2.getSelectedDate().getTime());
+         System.out.println(dateFormatted);
+         LocalDateTime gal = LocalDateTime.parse(dateFormatted, formatter);
+           LocalDateTime gal2 = LocalDateTime.parse(dateFormatted2, formatter);
+   //  JOptionPane.showMessageDialog(null,dateFormatted);
+     //Date data = Date.valueOf(dateFormatted);
+    // java.sql.Date datasql = new java.sql.Date(data.getTime());
+ //JOptionPane.showMessageDialog(null,datasql);
          try{
        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
                       "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
                    "INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR\n" +    
-              "WHERE EISMO_IVYKIS.IVYKIO_DATA > '%" + "'"+date+"'" + "%' ";
-      ResultSet rs = con.getback(query);
+              "WHERE EISMO_IVYKIS.IVYKIO_DATA BETWEEN ? AND ?;";
+      ResultSet rs = con.getback1(query,gal,gal2);
       jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
 }
      catch (Exception e) { 
-        JOptionPane.showMessageDialog(null,date);
+        JOptionPane.showMessageDialog(null,gal);
         System.err.println(e.getMessage()); 
     } 
     }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
@@ -387,6 +400,10 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
 
       public void lentele() throws SQLException{
       

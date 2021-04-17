@@ -194,6 +194,9 @@
       </Events>
     </Component>
     <Component class="datechooser.beans.DateChooserCombo" name="dateChooserCombo2">
+      <Events>
+        <EventHandler event="onSelectionChange" listener="datechooser.events.SelectionChangedListener" parameters="datechooser.events.SelectionChangedEvent" handler="dateChooserCombo2OnSelectionChange"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
