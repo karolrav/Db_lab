@@ -8,6 +8,9 @@ package avariju.GUI;
 import static avariju.GUI.pagrindinis_langas.con;
 import avariju.db.JdbcSQLServerConnection;
 import java.awt.Frame;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -20,9 +23,14 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author tueik
+ * @author tueik stat
+ * 
  */
+
 public class prideti extends javax.swing.JFrame {
+    
+    public static  int miesto_id,a;
+    static boolean ar = false;
     
          public prideti(java.awt.Frame parent, boolean modal) {
       
@@ -69,7 +77,7 @@ public class prideti extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         val_nr = new javax.swing.JTextField();
-        marke = new javax.swing.JTextField();
+        Ford = new javax.swing.JTextField();
         modelis = new javax.swing.JTextField();
         techas = new javax.swing.JTextField();
         draudimas = new javax.swing.JTextField();
@@ -95,7 +103,7 @@ public class prideti extends javax.swing.JFrame {
 
         jLabel2.setText("Gatvė");
 
-        jLabel4.setText("Kordinates");
+        jLabel4.setText("Kordinates *");
 
         Miestas.setText("Vilnius");
         Miestas.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +119,8 @@ public class prideti extends javax.swing.JFrame {
 
         Gatve.setText("Savanorių g.4");
 
+        kordinates.setText("-66.07899");
+
         jButton2.setText("Prideti");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,20 +128,20 @@ public class prideti extends javax.swing.JFrame {
             }
         });
 
-        zuv.setText("0");
+        zuv.setText("2");
         zuv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zuvActionPerformed(evt);
             }
         });
 
-        suz.setText("0");
+        suz.setText("3");
 
-        liud.setText("0");
+        liud.setText("1");
 
-        data.setText("2021-05-03");
+        data.setText("2021-04-17");
 
-        tps.setText("0");
+        tps.setText("2");
         tps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tpsActionPerformed(evt);
@@ -150,7 +160,7 @@ public class prideti extends javax.swing.JFrame {
 
         jLabel11.setText("unique");
 
-        jLabel10.setText("Valstybiniai Numberiai");
+        jLabel10.setText("Valstybiniai Numberiai *");
 
         jLabel12.setText("Marke");
 
@@ -160,19 +170,29 @@ public class prideti extends javax.swing.JFrame {
 
         jLabel15.setText("Draudimo NR");
 
-        jLabel16.setText("VIN KODAS");
+        jLabel16.setText("VIN KODAS *");
 
+        val_nr.setText("JJJ888");
         val_nr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 val_nrActionPerformed(evt);
             }
         });
 
-        marke.addActionListener(new java.awt.event.ActionListener() {
+        Ford.setText("Ford");
+        Ford.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                markeActionPerformed(evt);
+                FordActionPerformed(evt);
             }
         });
+
+        modelis.setText("Focus");
+
+        techas.setText("2021-04-17");
+
+        draudimas.setText("585658485");
+
+        vin.setText("FDF48ASD4A8");
 
         jLabel7.setText("Lytis");
 
@@ -184,15 +204,34 @@ public class prideti extends javax.swing.JFrame {
 
         jLabel20.setText("Kaltininko_ID");
 
+        gimimo_data.setText("1988-03-11");
         gimimo_data.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gimimo_dataActionPerformed(evt);
             }
         });
 
+        asmens_kodas.setText("39904253648");
+        asmens_kodas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asmens_kodasActionPerformed(evt);
+            }
+        });
+
+        zala.setText("2500.50");
+        zala.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zalaActionPerformed(evt);
+            }
+        });
+
+        kaltininko_id.setText("5");
+
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "V", "M", "K" }));
 
         jLabel21.setText("Salygos");
+
+        salygos.setText("lietus");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,7 +297,7 @@ public class prideti extends javax.swing.JFrame {
                                         .addComponent(jLabel14)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(techas))
-                                    .addComponent(marke, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Ford, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel16)
@@ -292,7 +331,7 @@ public class prideti extends javax.swing.JFrame {
                                                 .addComponent(jLabel18))
                                             .addGap(28, 28, 28)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(gimimo_data, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                                                .addComponent(gimimo_data)
                                                 .addComponent(asmens_kodas))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -329,7 +368,7 @@ public class prideti extends javax.swing.JFrame {
                                         .addGap(19, 19, 19)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jLabel12)
-                                            .addComponent(marke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(Ford, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
@@ -434,7 +473,7 @@ public class prideti extends javax.swing.JFrame {
                  java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
                  
                  String val = this.val_nr.getText();
-                  String mark = this.marke.getText();
+                  String mark = this.Ford.getText();
                    String mod = this.modelis.getText();
                     String Stech = this.techas.getText();
                     Date Dtech = formatter.parse(Stech);
@@ -456,34 +495,56 @@ public class prideti extends javax.swing.JFrame {
                    int kaltas=Integer.parseInt(Skaltas);  // cia
                    
                      String kokiossalygos = this.salygos.getText();
-                   
+                             
+                     
+                        String str1 = "SELECT KORDINATES FROM dbo.IVYKIO_VIETA WHERE KORDINATES = ?";
+       ResultSet rs1 = con.check1(str1,kord);
+    
+
+        if(rs1.next()){
+            ar=true;
+            JOptionPane.showMessageDialog(null,"Ispejimas: Kordinates nera unikalios");
             
-                  
-                 
-                 
-                 if(tps.getText().equals("")){ JOptionPane.showMessageDialog(null,"Transporto priemoniu skaicius negali buti 0");}
-                 else if (kordinates.getText().equals("")) {JOptionPane.showMessageDialog(null,"Kordinates negali buti tuscios");}
-                   
-                
-                 else {
-                 int miesto_id = con.add("INSERT INTO dbo.IVYKIO_VIETA (MIESTAS,GATVE,KORDINATES) VALUES (? , ? , ?)",miest,gatv,kord);
-                  System.out.println("nauajs id yra " + miesto_id);
-                     int a = con.add1("INSERT INTO EISMO_IVYKIS(ZUVUSIUJU_SKAICIUS,SUZEISTUJU_SKAICIUS,LIUDININKU_SKAICIUS,MIESTO_NR,IVYKIO_DATA,TRANSPORTO_PRIEMONIU_SKAICIUS) VALUES (? , ? , ?, ?, ?, ?)",Izuv, Isuz, Iliud, miesto_id, sqlDate, Itps);
-                     System.out.println("nauajs id yra " + a);
-                 con.add2("INSERT INTO TRANSPORTO_PRIEMONE(VALSTYBINIAI_NUMERIAI,marke, modelis ,technines_azpiuros_galiojimo_data, draudimo_nr,vin_kodas ) VALUES (? , ? , ?, ?, ?, ?)",val,mark,mod,sqltech,draud_nr,vinas);
+        }else{
+            ar=false;
+           
+           // this.dispose();
+            // System.out.println("nauajs id yra " + miesto_id);
+                    //cia 
+                       miesto_id = con.add("INSERT INTO dbo.IVYKIO_VIETA (MIESTAS,GATVE,KORDINATES) VALUES (? , ? , ?)",miest,gatv,kord);
+                      System.out.println("nauajs id yra " + miesto_id);
+                      String str = "SELECT VALSTYBINIAI_NUMERIAI, vin_kodas  FROM dbo.TRANSPORTO_PRIEMONE WHERE VALSTYBINIAI_NUMERIAI = ? AND vin_kodas = ? ";
+       ResultSet rs = con.check(str, val,vinas);
+     
+
+        if(rs.next()){
+            ar=true;
+            JOptionPane.showMessageDialog(null,"Ispejimas :Sie numeriai bei Vin Kodas jau yra naudojami");
+        }else{
+            ar=false;
+               a = con.add1("INSERT INTO EISMO_IVYKIS(ZUVUSIUJU_SKAICIUS,SUZEISTUJU_SKAICIUS,LIUDININKU_SKAICIUS,MIESTO_NR,IVYKIO_DATA,TRANSPORTO_PRIEMONIU_SKAICIUS) VALUES (? , ? , ?, ?, ?, ?)",Izuv, Isuz, Iliud, miesto_id, sqlDate, Itps);
+           
+            con.add2("INSERT INTO TRANSPORTO_PRIEMONE(VALSTYBINIAI_NUMERIAI,marke, modelis ,technines_azpiuros_galiojimo_data, draudimo_nr,vin_kodas ) VALUES (? , ? , ?, ?, ?, ?)",val,mark,mod,sqltech,draud_nr,vinas);
+           // this.dispose();
+        }
+        }
+                     
+               //  
+                if(ar==false){
+                    System.out.println("nauajs id yra " + a +"o miesto " + miesto_id);
                  con.add3("INSERT INTO Dalyvauja (VALSTYBINIAI_NUMERIAI ,EISMO_IVYKIo_ID) VALUES (? , ?)",val,a);
                 int eismo_dalyvis = con.add4("INSERT INTO EISMO_DALYVIS ( LYTIS, GIMIMO_DATA, EISMO_IVYKIO_Id, ASMENS_KODAS, PRELIMINARI_ZALA, KALTININKO_ID,VALSTYBINIAI_NUMERIAI ) VALUES (? , ? , ?, ?, ?, ?, ?)",lytis,sqlgimimo,a,asmens,zala,kaltas,val);
                 int Ivykio_priezastis = con.add5("INSERT INTO dbo.IVYKIO_PRIEZASTIS (IVYKIO_PRIEZASTIES_SALYGOS) VALUES (?)",kokiossalygos);
                 con.add6("INSERT INTO dbo.IVYKSTA (EISMO_IVYKIO_ID, IVYKIO_PRIEZASTIES_ID) VALUES (?, ?)",a,Ivykio_priezastis);
-                 this.dispose(); } 
-             } catch (ParseException ex) {
-                 JOptionPane.showMessageDialog(null,"Neteisingai Ivestos Reiksmes");
+                 this.dispose(); 
+             }}catch (HeadlessException | NumberFormatException | SQLException | ParseException ex) {
+                 JOptionPane.showMessageDialog(null,"Reiksmes tuscios, arba neteisingai ivestos");
                  Logger.getLogger(prideti.class.getName()).log(Level.SEVERE, null, ex);
              }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void tpsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tpsActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_tpsActionPerformed
 
     private void zuvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zuvActionPerformed
@@ -494,9 +555,9 @@ public class prideti extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_val_nrActionPerformed
 
-    private void markeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markeActionPerformed
+    private void FordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_markeActionPerformed
+    }//GEN-LAST:event_FordActionPerformed
 
     private void MiestasPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_MiestasPropertyChange
 
@@ -506,8 +567,17 @@ public class prideti extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_gimimo_dataActionPerformed
 
+    private void asmens_kodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asmens_kodasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_asmens_kodasActionPerformed
+
+    private void zalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zalaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_zalaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Ford;
     private javax.swing.JTextField Gatve;
     private javax.swing.JTextField Miestas;
     private javax.swing.JTextField asmens_kodas;
@@ -543,7 +613,6 @@ public class prideti extends javax.swing.JFrame {
     private javax.swing.JTextField kaltininko_id;
     private javax.swing.JTextField kordinates;
     private javax.swing.JTextField liud;
-    private javax.swing.JTextField marke;
     private javax.swing.JTextField modelis;
     private javax.swing.JTextField salygos;
     private javax.swing.JTextField suz;

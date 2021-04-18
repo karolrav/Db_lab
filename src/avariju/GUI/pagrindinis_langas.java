@@ -15,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.sql.Date;  
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +25,20 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 /**
  *
  * @author tueik
@@ -57,6 +71,9 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         filter = new javax.swing.JButton();
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
         dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
+        filtras = new javax.swing.JButton();
+        ataskaita = new javax.swing.JButton();
+        istrynti = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -76,6 +93,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -136,6 +154,32 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             }
         });
 
+        filtras.setText("filtruoti");
+        filtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtrasActionPerformed(evt);
+            }
+        });
+
+        ataskaita.setText("Ataskaita");
+        ataskaita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ataskaitaActionPerformed(evt);
+            }
+        });
+
+        istrynti.setText("Istrynti eilute");
+        istrynti.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                istryntiMouseClicked(evt);
+            }
+        });
+        istrynti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                istryntiActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("Prideti duomenu");
 
         jMenuItem1.setText("Prideti Nauja irasa");
@@ -170,24 +214,30 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(127, 127, 127)
+                        .addGap(56, 56, 56)
+                        .addComponent(istrynti)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addGap(31, 31, 31)
-                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addGap(30, 30, 30)
+                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(ataskaita)))
+                .addGap(32, 32, 32))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(filtras)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
                 .addComponent(filter)
                 .addGap(16, 16, 16))
         );
@@ -195,19 +245,30 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(filter)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(57, 57, 57))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(istrynti))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(filter)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(filtras))
+                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(ataskaita)))))
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -220,12 +281,12 @@ public class pagrindinis_langas extends javax.swing.JFrame {
     private void ieskotiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ieskotiKeyReleased
        
        try{
-        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
+        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
                       "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
                    "INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR\n" +    
-                "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + ieskoti.getText() + "%' OR DALYVAUJA.EISMO_IVYKIO_ID LIKE  '%" + ieskoti.getText() + "%'  OR EISMO_DALYVIS.ASMENS_KODAS LIKE  '%" + ieskoti.getText() + "%' OR TRANSPORTO_PRIEMONE.MARKE LIKE  '%" + ieskoti.getText() + "%' OR IVYKIO_VIETA.MIESTAS LIKE  '%" + ieskoti.getText() + "%' ";
+                "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + ieskoti.getText() + "%' OR EISMO_DALYVIS.PRELIMINARI_ZALA LIKE  '%" + ieskoti.getText() + "%'  OR EISMO_DALYVIS.ASMENS_KODAS LIKE  '%" + ieskoti.getText() + "%' OR TRANSPORTO_PRIEMONE.MARKE LIKE  '%" + ieskoti.getText() + "%' OR IVYKIO_VIETA.MIESTAS LIKE  '%" + ieskoti.getText() + "%' ";
       ResultSet rs = con.getback(query);
       jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
 }
@@ -243,8 +304,8 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             String value = jTable1.getModel().getValueAt(row, col).toString();
             if(col==4){
             String query = " SELECT IVYKIO_VIETA.GATVE, IVYKIO_VIETA.MIESTO_NR, IVYKIO_VIETA.KORDINATES FROM dbo.IVYKIO_VIETA, dbo.EISMO_IVYKIS \n" +
-                    "WHERE IVYKIO_VIETA.MIESTAS LIKE '%" + value + "%'  \n" +
-                      "AND IVYKIO_VIETA.MIESTO_NR=EISMO_IVYKIS.MIESTO_NR  \n" +
+                    "WHERE IVYKIO_VIETA.MIESTO_NR=EISMO_IVYKIS.MIESTO_NR  \n" +
+                      "AND  IVYKIO_VIETA.MIESTAS LIKE '%" + value + "%' \n" + 
                     "";
             
             
@@ -301,10 +362,13 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,to_print);
             } else if(col==0) {
             
-                  String query = " SELECT * FROM dbo.DALYVAUJA, dbo.EISMO_IVYKIS \n" +
-                    "WHERE DALYVAUJA.VALSTYBINIAI_NUMERIAI LIKE '%" + value + "%'  \n" +
-                            "AND DALYVAUJA.EISMO_IVYKIO_ID=EISMO_IVYKIS.EISMO_IVYKIO_ID  \n" +
+                  String query = " SELECT EISMO_IVYKIS.IVYKIO_DATA ,EISMO_IVYKIS.ZUVUSIUJU_SKAICIUS, EISMO_IVYKIS.SUZEISTUJU_SKAICIUS, EISMO_IVYKIS.TRANSPORTO_PRIEMONIU_SKAICIUS ,EISMO_IVYKIS.LIUDININKU_SKAICIUS FROM dbo.EISMO_IVYKIS, dbo.DALYVAUJA, dbo.TRANSPORTO_PRIEMONE \n" +
+                            "WHERE DALYVAUJA.EISMO_IVYKIO_ID=EISMO_IVYKIS.EISMO_IVYKIO_ID  \n" +
+                             "AND TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=DALYVAUJA.VALSTYBINIAI_NUMERIAI  \n" +
+                                 " AND TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI LIKE '%" + value + "%'  \n" +
                     "";
+                  
+                  
             
             
             ResultSet rs = con.getback(query);
@@ -334,7 +398,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
        try{
-        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
+        String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
                       "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
@@ -359,7 +423,29 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
     private void dateChooserCombo1OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnSelectionChange
 
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
+
+    private void dateChooserCombo1OnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnCommit
+
+    }//GEN-LAST:event_dateChooserCombo1OnCommit
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        naujas = new prideti(this,true);
+        naujas.setVisible(true);
+        naujas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        try {
+            lentele();
+        } catch (SQLException ex) {
+            Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
+
+    private void filtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtrasActionPerformed
+     SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
          String dateFormatted = formattedDate.format(dateChooserCombo1.getSelectedDate().getTime());
           String dateFormatted2 = formattedDate.format(dateChooserCombo2.getSelectedDate().getTime());
@@ -371,7 +457,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
     // java.sql.Date datasql = new java.sql.Date(data.getTime());
  //JOptionPane.showMessageDialog(null,datasql);
          try{
-       String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, DALYVAUJA.EISMO_IVYKIO_ID, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
+       String query = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
                       "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +  
@@ -384,30 +470,59 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null,gal);
         System.err.println(e.getMessage()); 
     } 
-    }//GEN-LAST:event_dateChooserCombo1OnSelectionChange
+    }//GEN-LAST:event_filtrasActionPerformed
 
-    private void dateChooserCombo1OnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_dateChooserCombo1OnCommit
-
-    }//GEN-LAST:event_dateChooserCombo1OnCommit
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        naujas = new prideti(this,true);
-        naujas.setVisible(true);
-        naujas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    private void ataskaitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ataskaitaActionPerformed
+       java.sql.Connection conn ;
         try {
+             String DB_URL = "jdbc:sqlserver://DESKTOP-FL6PS0D\\data:1433;databaseName=veikianti;";
+ String DB_USER = "root";
+ String DB_PASSWORD = "admin";
+               conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+           String path = "C:\\Users\\tueik\\Documents\\NetBeansProjects\\Avariju db\\src\\avariju\\GUI\\report1.jrxml";
+           JasperReport jr = JasperCompileManager.compileReport(path);
+           JasperPrint jp = JasperFillManager.fillReport(jr,null,conn);
+           JasperViewer.viewReport(jp);
+  
+        } catch (Exception ex) {
+            Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ataskaitaActionPerformed
+
+    private void istryntiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_istryntiActionPerformed
+ 
+    }//GEN-LAST:event_istryntiActionPerformed
+
+    private void istryntiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_istryntiMouseClicked
+       
+        try {
+            /*int col = jTable1.getColumnModel().getColumnIndexAtX(evt.getX());
+            int row = evt.getY()/jTable1.getRowHeight();
+            if(row < jTable1.getRowCount() && row >= 0 && col < jTable1.getColumnCount() && col>=0){
+            Object rowValue = jTable1.getValueAt(row, col);
+            String nr = rowValue.toString();
+            JOptionPane.showMessageDialog(null,nr);
+            }
+            */
+            int selectedRow = jTable1.getSelectedRow();
+            selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+            String val1 = (String)jTable1.getModel().getValueAt(selectedRow, 0);
+            con.delete("Delete dbo.EISMO_DALYVIS where VALSTYBINIAI_NUMERIAI =  ? ;\n" +
+                    "Delete from dbo.DALYVAUJA where VALSTYBINIAI_NUMERIAI =  ?  ;\n" +
+                    "Delete from dbo.TRANSPORTO_PRIEMONE where VALSTYBINIAI_NUMERIAI =  ? \n" +
+                    "",val1,val1,val1);
+            
             lentele();
         } catch (SQLException ex) {
             Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void dateChooserCombo2OnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_dateChooserCombo2OnSelectionChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dateChooserCombo2OnSelectionChange
+    }//GEN-LAST:event_istryntiMouseClicked
 
       public void lentele() throws SQLException{
       
-       String sql = "SELECT DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
+       String sql = "SELECT IVYKIO_VIETA.MIESTO_NR,DALYVAUJA.VALSTYBINIAI_NUMERIAI, EISMO_DALYVIS.PRELIMINARI_ZALA, EISMO_DALYVIS.ASMENS_KODAS, TRANSPORTO_PRIEMONE.MARKE, EISMO_IVYKIS.MIESTO_NR, IVYKIO_VIETA.MIESTAS FROM dbo.EISMO_DALYVIS \n" +
                 "INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
 "INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI\n" +
                "INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID\n" +     
@@ -442,6 +557,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
              mas[i][2] = rsl.getString("ASMENS_KODAS"); 
                mas[i][3] = rsl.getString("MARKE"); 
                 mas[i][4] = rsl.getString("MIESTAS"); 
+                
 i++;
         
     }
@@ -506,10 +622,13 @@ i++;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ataskaita;
     private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private datechooser.beans.DateChooserCombo dateChooserCombo2;
     private javax.swing.JButton filter;
+    private javax.swing.JButton filtras;
     private javax.swing.JTextField ieskoti;
+    private javax.swing.JButton istrynti;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;

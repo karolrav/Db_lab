@@ -65,7 +65,20 @@ public class JdbcSQLServerConnection {
     }
 
    
-   
+     public int  delete(String query,String a,String b,String c){
+    try{
+     PreparedStatement pstmt = conn.prepareStatement(query);
+      pstmt.setString(1, a);
+       pstmt.setString(2, b);
+        pstmt.setString(3, c);
+ 
+    return pstmt.executeUpdate();
+    }catch(SQLException e){
+      System.out.println("ERROR while deleting line!");
+      System.out.println(e.toString());
+      return -1;
+    }
+  }
    
    public int add(String query,String miest, String gatv, String kord){
     try{
@@ -219,5 +232,32 @@ public class JdbcSQLServerConnection {
     }
     }
 
+    public ResultSet check(String str, String val, String vinas) {
+      try{
+    
+      PreparedStatement pstmt = conn.prepareStatement(str);
+      pstmt.setString(1, val);
+      pstmt.setString(2, vinas);
+       ResultSet result = pstmt.executeQuery();
+      return result;
+    }catch(SQLException e){
+      System.out.println("ERROR while executing check query");
+      System.out.println(e.toString());
+      return null;
+    }
+    }
+
+    public ResultSet check1(String str1, String kord) {
+            try{
+      PreparedStatement pstmt = conn.prepareStatement(str1);
+      pstmt.setString(1, kord);
+       ResultSet result = pstmt.executeQuery();
+      return result;
+    }catch(SQLException e){
+      System.out.println("ERROR while executing check query");
+      System.out.println(e.toString());
+      return null;
+    }
+    }
 
 }
