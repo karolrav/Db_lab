@@ -48,12 +48,12 @@ INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISM
 					<text><![CDATA[Miestas:]]></text>
 				</staticText>
 				<textField evaluationTime="Group" evaluationGroup="Miestas" isBlankWhenNull="true">
-					<reportElement x="342" y="0" width="106" height="20" uuid="d535a581-82f0-475c-8ca5-204514b0a252"/>
+					<reportElement x="382" y="0" width="106" height="20" uuid="d535a581-82f0-475c-8ca5-204514b0a252"/>
 					<textFieldExpression><![CDATA[$V{Miestas_COUNT}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="258" y="0" width="79" height="20" uuid="4db0e767-16fd-4f10-9447-b027757a876f"/>
-					<text><![CDATA[Iš viso atvejų:]]></text>
+					<reportElement x="237" y="0" width="145" height="20" uuid="4db0e767-16fd-4f10-9447-b027757a876f"/>
+					<text><![CDATA[Iš viso atvejų mieste:]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -100,4 +100,22 @@ INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISM
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="57">
+			<textField>
+				<reportElement x="448" y="15" width="100" height="20" uuid="02305f74-ecfd-444d-b1e9-c16e35aa2fc8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="15" width="100" height="20" uuid="63ad61b3-b8a1-4c0b-8007-a3826e175fe8"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Iš viso atvejų:]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>
