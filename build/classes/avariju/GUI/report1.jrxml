@@ -8,7 +8,7 @@
                 INNER JOIN DALYVAUJA ON DALYVAUJA.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI
 INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISMO_DALYVIS.VALSTYBINIAI_NUMERIAI
                       INNER JOIN EISMO_IVYKIS ON EISMO_IVYKIS.EISMO_IVYKIO_ID=EISMO_DALYVIS.EISMO_IVYKIO_ID 
-                   INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR]]>
+                   INNER JOIN IVYKIO_VIETA ON EISMO_IVYKIS.MIESTO_NR=IVYKIO_VIETA.MIESTO_NR ORDER BY IVYKIO_VIETA.MIESTAS]]>
 	</queryString>
 	<field name="VALSTYBINIAI_NUMERIAI" class="java.lang.String"/>
 	<field name="EISMO_IVYKIO_ID" class="java.math.BigDecimal"/>
@@ -16,65 +16,87 @@ INNER JOIN TRANSPORTO_PRIEMONE ON TRANSPORTO_PRIEMONE.VALSTYBINIAI_NUMERIAI=EISM
 	<field name="MARKE" class="java.lang.String"/>
 	<field name="MIESTAS" class="java.lang.String"/>
 	<field name="IVYKIO_DATA" class="java.sql.Timestamp"/>
+	<group name="Miestas" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{MIESTAS}]]></groupExpression>
+		<groupHeader>
+			<band height="73">
+				<textField>
+					<reportElement x="100" y="0" width="100" height="20" uuid="944bc02a-0ccd-428e-8c7c-87f9cbd6db32"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MIESTAS}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="41" width="137" height="20" uuid="086ebe24-cf1d-4acf-8fa6-026d6d27ea95"/>
+					<text><![CDATA[Valstybiniai numeriai]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="137" y="41" width="100" height="20" uuid="30e6813c-39c1-4c3d-b1f7-0c8dafd894c5"/>
+					<text><![CDATA[Asmens kodas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="258" y="41" width="100" height="20" uuid="2599c7f7-71f1-4f18-b008-5627a4ce3da5"/>
+					<text><![CDATA[Marke]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="388" y="41" width="100" height="20" uuid="cd55f64c-1264-4532-8002-d46ef868abc4"/>
+					<text><![CDATA[Įvykio data]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="70" height="20" uuid="505f160b-9137-426e-be28-a4f9db2c1601"/>
+					<text><![CDATA[Miestas:]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="Miestas" isBlankWhenNull="true">
+					<reportElement x="342" y="0" width="106" height="20" uuid="d535a581-82f0-475c-8ca5-204514b0a252"/>
+					<textFieldExpression><![CDATA[$V{Miestas_COUNT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="258" y="0" width="79" height="20" uuid="4db0e767-16fd-4f10-9447-b027757a876f"/>
+					<text><![CDATA[Iš viso atvejų:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="valnr">
+		<groupExpression><![CDATA[$F{VALSTYBINIAI_NUMERIAI}]]></groupExpression>
+	</group>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<staticText>
 				<reportElement x="219" y="13" width="123" height="25" uuid="f59cce1b-4fb3-46b9-a711-8860e9d10012"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Avariju Duombaze]]></text>
+				<text><![CDATA[Avarijų Duombazė]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="19" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="100" height="20" uuid="086ebe24-cf1d-4acf-8fa6-026d6d27ea95"/>
-				<text><![CDATA[VALSTYBINIAI_NUMERIAI]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="119" y="0" width="100" height="20" uuid="30e6813c-39c1-4c3d-b1f7-0c8dafd894c5"/>
-				<text><![CDATA[ASMENS_KODAS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="232" y="0" width="100" height="20" uuid="2599c7f7-71f1-4f18-b008-5627a4ce3da5"/>
-				<text><![CDATA[ASMENS_KODAS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="355" y="0" width="100" height="20" uuid="cd55f64c-1264-4532-8002-d46ef868abc4"/>
-				<text><![CDATA[IVYKIO_DATA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="485" y="0" width="70" height="20" uuid="505f160b-9137-426e-be28-a4f9db2c1601"/>
-				<text><![CDATA[MIESTAS]]></text>
-			</staticText>
+		<band height="6" splitType="Stretch">
+			<elementGroup/>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="39" width="100" height="20" uuid="bbf862d1-d45f-4c3f-a869-e359e743418e"/>
-				<textFieldExpression><![CDATA[$F{VALSTYBINIAI_NUMERIAI}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="119" y="39" width="100" height="20" uuid="44358bc7-61ff-4e90-ae51-66f329be2b5b"/>
+				<reportElement x="137" y="17" width="100" height="20" uuid="44358bc7-61ff-4e90-ae51-66f329be2b5b"/>
 				<textFieldExpression><![CDATA[$F{ASMENS_KODAS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="232" y="39" width="100" height="20" uuid="10075b80-0143-4ffa-a0d4-a1419d7c5a0e"/>
-				<textFieldExpression><![CDATA[$F{ASMENS_KODAS}]]></textFieldExpression>
+				<reportElement x="258" y="17" width="100" height="20" uuid="10075b80-0143-4ffa-a0d4-a1419d7c5a0e"/>
+				<textFieldExpression><![CDATA[$F{MARKE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="355" y="39" width="100" height="20" uuid="0b75b580-5780-4f8a-9e9b-1919f101d20d"/>
+				<reportElement x="388" y="17" width="100" height="20" uuid="0b75b580-5780-4f8a-9e9b-1919f101d20d"/>
 				<textFieldExpression><![CDATA[$F{IVYKIO_DATA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="485" y="39" width="70" height="20" uuid="e1e6bc2f-a094-43fa-a949-30edafd1d355"/>
-				<textFieldExpression><![CDATA[$F{MIESTAS}]]></textFieldExpression>
+				<reportElement x="0" y="17" width="100" height="20" uuid="bbf862d1-d45f-4c3f-a869-e359e743418e"/>
+				<textFieldExpression><![CDATA[$F{VALSTYBINIAI_NUMERIAI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

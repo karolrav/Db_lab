@@ -97,8 +97,6 @@ public class prideti extends javax.swing.JFrame {
 
         jButton1.setText("jButton1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setText("Miestas");
 
         jLabel2.setText("Gatvė");
@@ -119,7 +117,12 @@ public class prideti extends javax.swing.JFrame {
 
         Gatve.setText("Savanorių g.4");
 
-        kordinates.setText("-66.07899");
+        kordinates.setText("-66.058899");
+        kordinates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kordinatesActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Prideti");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -157,8 +160,6 @@ public class prideti extends javax.swing.JFrame {
         jLabel8.setText("Ivykio Data");
 
         jLabel9.setText("Transporto priemonių skaičius");
-
-        jLabel11.setText("unique");
 
         jLabel10.setText("Valstybiniai Numberiai *");
 
@@ -501,13 +502,13 @@ public class prideti extends javax.swing.JFrame {
        ResultSet rs1 = con.check1(str1,kord);
     
 
-        if(rs1.next()){
+        if(rs1.next()){ 
             ar=true;
             JOptionPane.showMessageDialog(null,"Ispejimas: Kordinates nera unikalios");
             
         }else{
             ar=false;
-           
+         
            // this.dispose();
             // System.out.println("nauajs id yra " + miesto_id);
                     //cia 
@@ -574,6 +575,10 @@ public class prideti extends javax.swing.JFrame {
     private void zalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zalaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_zalaActionPerformed
+
+    private void kordinatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kordinatesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kordinatesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

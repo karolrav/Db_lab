@@ -8,6 +8,7 @@ package avariju.GUI;
 
 import avariju.db.JdbcSQLServerConnection;
 import com.sun.jdi.connect.spi.Connection;
+import java.awt.Color;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,6 +48,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
     static JdbcSQLServerConnection con = new JdbcSQLServerConnection();
      prideti naujas;
+     pakeisti pak;
     
     public pagrindinis_langas() throws SQLException {
         initComponents();
@@ -74,6 +76,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         filtras = new javax.swing.JButton();
         ataskaita = new javax.swing.JButton();
         istrynti = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -83,9 +86,6 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
 
         jMenuItem6.setText("jMenuItem6");
 
@@ -130,7 +130,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             }
         });
 
-        filter.setText("Išvalyti");
+        filter.setText("Atnaujinti lentelę");
         filter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterActionPerformed(evt);
@@ -154,21 +154,21 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             }
         });
 
-        filtras.setText("filtruoti");
+        filtras.setText("Filtruoti pagal datą");
         filtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filtrasActionPerformed(evt);
             }
         });
 
-        ataskaita.setText("Ataskaita");
+        ataskaita.setText("Generuoti ataskaitą");
         ataskaita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ataskaitaActionPerformed(evt);
             }
         });
 
-        istrynti.setText("Istrynti eilute");
+        istrynti.setText("Ištrynti eilutę");
         istrynti.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 istryntiMouseClicked(evt);
@@ -180,9 +180,16 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             }
         });
 
-        jMenu2.setText("Prideti duomenu");
+        jButton1.setText("Pakeisti eilutę");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jMenuItem1.setText("Prideti Nauja irasa");
+        jMenu2.setText("Pridėti duomenis");
+
+        jMenuItem1.setText("Pridėti naują įrašą");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -198,15 +205,6 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Edit");
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("jMenu4");
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setText("jMenu5");
-        jMenuBar1.add(jMenu5);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,61 +212,57 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
                         .addComponent(istrynti)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1)
+                        .addGap(41, 41, 41)
                         .addComponent(jLabel1)
-                        .addGap(30, 30, 30)
-                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(ataskaita)))
-                .addGap(32, 32, 32))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(filtras)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(filter)
-                .addGap(16, 16, 16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(ataskaita))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(26, 26, 26)
+                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(26, 26, 26)
+                            .addComponent(filtras)
+                            .addGap(32, 32, 32)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(filter))))
+                .addGap(108, 108, 108))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(istrynti))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(filter)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(filtras))
-                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(ataskaita)))))
-                .addGap(53, 53, 53))
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(filtras)
+                            .addComponent(filter)))
+                    .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(istrynti)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ieskoti, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ataskaita)
+                        .addComponent(jLabel1)))
+                .addGap(22, 22, 22))
         );
 
         pack();
@@ -432,7 +426,7 @@ public class pagrindinis_langas extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         naujas = new prideti(this,true);
         naujas.setVisible(true);
-        naujas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        naujas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         try {
             lentele();
         } catch (SQLException ex) {
@@ -496,6 +490,10 @@ public class pagrindinis_langas extends javax.swing.JFrame {
 
     private void istryntiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_istryntiMouseClicked
        
+        int selectedRow = jTable1.getSelectedRow();
+         selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+        int input = JOptionPane.showConfirmDialog(null, "Ar tikrai norite istrynti " + (String)jTable1.getModel().getValueAt(selectedRow, 0) + " ");
+        if(input == 0){
         try {
             /*int col = jTable1.getColumnModel().getColumnIndexAtX(evt.getX());
             int row = evt.getY()/jTable1.getRowHeight();
@@ -505,8 +503,9 @@ public class pagrindinis_langas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,nr);
             }
             */
-            int selectedRow = jTable1.getSelectedRow();
-            selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+         
+     
+           //selectedRow = jTable1.convertRowIndexToModel(selectedRow);
             String val1 = (String)jTable1.getModel().getValueAt(selectedRow, 0);
             con.delete("Delete dbo.EISMO_DALYVIS where VALSTYBINIAI_NUMERIAI =  ? ;\n" +
                     "Delete from dbo.DALYVAUJA where VALSTYBINIAI_NUMERIAI =  ?  ;\n" +
@@ -517,8 +516,30 @@ public class pagrindinis_langas extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
         }
+        } else { }
 
     }//GEN-LAST:event_istryntiMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      jTable1.setSelectionBackground(Color.lightGray);
+        int selectedRow = jTable1.getSelectedRow();
+            selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+            String val1 = (String)jTable1.getModel().getValueAt(selectedRow, 0);
+             String val2 = (String)jTable1.getModel().getValueAt(selectedRow, 1);
+             String val3 = (String)jTable1.getModel().getValueAt(selectedRow, 2);
+             String val4 = (String)jTable1.getModel().getValueAt(selectedRow, 3);
+             String val5 = (String)jTable1.getModel().getValueAt(selectedRow, 4);
+        
+        pak = new pakeisti(this,true,val1,val2,val3,val4,val5);
+        pak.setVisible(true);
+        pak.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            lentele();
+        } catch (SQLException ex) {
+            Logger.getLogger(pagrindinis_langas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
       public void lentele() throws SQLException{
       
@@ -629,12 +650,10 @@ i++;
     private javax.swing.JButton filtras;
     private javax.swing.JTextField ieskoti;
     private javax.swing.JButton istrynti;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem6;

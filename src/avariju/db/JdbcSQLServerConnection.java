@@ -64,6 +64,58 @@ public class JdbcSQLServerConnection {
     }
     }
 
+         public int update(String query,String val_nr,String old ){
+    try{
+      PreparedStatement pstmt = conn.prepareStatement(query);
+      pstmt.setString(1, val_nr);
+       pstmt.setString(2, old);
+    return pstmt.executeUpdate();
+    }catch(SQLException e){
+      System.out.println("ERROR while updating line!");
+      System.out.println(e.toString());
+      return -1;
+    }
+  }
+              public int update3(String query,String val_nr,String asmens ){
+    try{
+      PreparedStatement pstmt = conn.prepareStatement(query);
+      pstmt.setString(1, asmens);
+       pstmt.setString(2, val_nr);
+    return pstmt.executeUpdate();
+    }catch(SQLException e){
+      System.out.println("ERROR while updating line!");
+      System.out.println(e.toString());
+      return -1;
+    }
+  }
+              
+                 public int update4(String string, String miestas, int miesto_nr) {
+       try{
+      PreparedStatement pstmt = conn.prepareStatement(string);
+      pstmt.setString(1, miestas);
+        pstmt.setInt(2, miesto_nr);
+    return pstmt.executeUpdate();
+    }catch(SQLException e){
+      System.out.println("ERROR while updating line!");
+      System.out.println(e.toString());
+      return -1;
+    }
+    }
+                 
+                 
+            public int update1(String string,String val_nr, double zala) {
+       try{
+      PreparedStatement pstmt = conn.prepareStatement(string);
+      pstmt.setDouble(1, zala);
+        pstmt.setString(2, val_nr);
+    return pstmt.executeUpdate();
+    }catch(SQLException e){
+      System.out.println("ERROR while updating line!");
+      System.out.println(e.toString());
+      return -1;
+    }
+    }
+
    
      public int  delete(String query,String a,String b,String c){
     try{
@@ -259,5 +311,5 @@ public class JdbcSQLServerConnection {
       return null;
     }
     }
-
+ 
 }
